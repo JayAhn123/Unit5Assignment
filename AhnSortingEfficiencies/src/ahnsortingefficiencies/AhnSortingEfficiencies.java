@@ -11,12 +11,30 @@ import java.awt.Color;
  */
 public class AhnSortingEfficiencies extends javax.swing.JFrame {
 
+    //declaring two global array that contains numbers from the file
+    int[] num10 = new int[10];//array with 10 numbers
+    int[] num10000 = new int[10000];//array with 10000 numbesr
+
     /**
      * Creates new form AhnSortingEfficiencies
      */
     public AhnSortingEfficiencies() {
         initComponents();
-        getContentPane().setBackground(Color.CYAN);
+        getContentPane().setBackground(Color.CYAN);//setting the background color to cyan
+        try {//attemping to open the file
+            File f = new File("src/ahnsortingefficiencies/10nums.txt");//setting file f to 10nums.txt
+            File f2 = new File("src/ahnsortingefficiencies/10000nums.txt");//setting file f2 to 10000nums.txt
+            Scanner s = new Scanner(f);//setting scanner s to read file f
+            Scanner s2 = new Scanner(f2);//setting scanner s2 to read file f2
+            for (int i = 0; i < 10000; i++) {//for loop to repeat 10000 times
+                while (i < 10) {//while i is less than 10
+                    num10[i] = Integer.parseInt(s.nextLine());//fills num10 array with 10nums.txt
+                }
+                num10000[i] = Integer.parseInt(s2.nextLine());//fills num10000 array with 10000nums.txt
+            }
+        } catch (FileNotFoundException e) {//catching any errors that may occur
+            System.out.println("Error: " + e);//displaying error message
+        }
     }
 
     /**
@@ -139,19 +157,110 @@ public class AhnSortingEfficiencies extends javax.swing.JFrame {
     }//GEN-LAST:event_rbtn10ActionPerformed
 
     private void btnSortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSortActionPerformed
-        try {
-            File f;
-            if (rbtn10.isEnabled()) {
-                f = new File("src/ahnsortingefficiencies/10nums.txt");
-            } else {
-                f = new File("src/ahnsortingefficiencies/10000nums.txt");
-            }
-            Scanner s = new Scanner(f);
-        } catch (FileNotFoundException e) {
-            System.out.println("Error: " + e);
-        }
-
+        
     }//GEN-LAST:event_btnSortActionPerformed
+
+    /**
+     * bubble sorting method for ascending order
+     *
+     * @param a - array of numbers
+     * @return - counter for how many times a loop was executed
+     */
+    public static int bubbleSortA(int[] a) {
+        int counter = 0;//declaring counter to track how many times a loop executes
+        int k = 0;//declaring k value which will track how many elements are sorted
+        boolean exchangeMade = true;//declaring boolean exchangeMade to determine if there was any exchange within array
+        while (k < a.length - 1 && exchangeMade) {//while k is less than the array length - 1 and exchangeMade is true
+            exchangeMade = false;//sets exchangeMade to false
+            k++;//add 1 to k
+            for (int i = 0; i < a.length - k; i++) {//for loop 0 to array length - k since we already sorted k amount of elements
+                counter++;//adds 1 to the counter to track loop
+                if (a[i] > a[i + 1]) {//if ith element is greater than i + 1th element
+                    //swaping i + 1th element and ith element
+                    int temp = a[i + 1];//put i + 1th element into a temporary place holder
+                    a[i + 1] = a[i];//set i + 1th element to ith element
+                    a[i] = temp;//set ith element to the temporary place holder from i + 1th element
+                    exchangeMade = true;//set exchangemade to true;
+                }
+            }
+        }
+        return counter;//returning counter that tracked loops
+    }
+
+    /**
+     * bubble sorting method for descending order
+     *
+     * @param a - array of numbers
+     * @return - counter for how many times a loop was executed
+     */
+    public static int bubbleSortD(int[] a) {
+        int counter = 0;//declaring counter to track how many times a loop executes
+        int k = 0;//declaring k value which will track how many elements are sorted
+        boolean exchangeMade = true;//declaring boolean exchangeMade to determine if there was any exchange within array
+        while (k < a.length - 1 && exchangeMade) {//while k is less than the array length - 1 and exchangeMade is true
+            exchangeMade = false;//sets exchangeMade to false
+            k++;//add 1 to k
+            for (int i = 0; i < a.length - k; i++) {//for loop 0 to array length - k since we already sorted k amount of elements
+                counter++;//adds 1 to the counter to track loop
+                if (a[i] < a[i + 1]) {//if ith element is less than i + 1th element
+                    //swaping i + 1th element and ith element
+                    int temp = a[i + 1];//put i + 1th element into a temporary place holder
+                    a[i + 1] = a[i];//set i + 1th element to ith element
+                    a[i] = temp;//set ith element to the temporary place holder from i + 1th element
+                    exchangeMade = true;//set exchangemade to true;
+                }
+            }
+        }
+        return counter;//returning counter that tracked loops
+    }
+
+    /**
+     * insertion sorting method for ascending order
+     *
+     * @param a - array of numbers
+     * @return - counter for how many times a loop was executed
+     */
+    public static int insertionSortA(int[] a) {
+        int counter = 0;//declaring counter that will track the number of loops executed
+        int key;//unsorted element that is being sorted
+        int j;//index of sorted item that is being compared to key which is unsorted element
+        for (int i = 1; i < a.length; i++) {//for loop 1 to length of the array. Starts at 1 because insertion sorting method consider the first element already sorted
+            key = a[i];//setting key to ith element
+            j = i - 1;//setting j to i - 1 because element before i is already considered sorted
+            while (j >= 0 && a[j] > key) {//while j is geater or equal to 0 and jth element is greater than key (unsorted item is less than sorted ones on the left)
+                //unsorted item moves down until it is sorted on the right index
+                a[j + 1] = a[j];//set j + 1th(key) element to jth element
+                j--;//subtract 1 from j
+                counter++;//add 1 to the counter to track loop
+            }
+            a[j + 1] = key;//set j + 1th element to key
+        }
+        return counter;//return counter that tracked loops
+    }
+
+    /**
+     * insertion sorting method for descending order
+     *
+     * @param a - array of numbers
+     * @return - counter for how many times a loop was executed
+     */
+    public static int insertionSortD(int[] a) {
+        int counter = 0;//declaring counter that will track the number of loops executed
+        int key;//unsorted element that is being sorted
+        int j;//index of sorted item that is being compared to key which is unsorted element
+        for (int i = 1; i < a.length; i++) {//for loop 1 to length of the array. Starts at 1 because insertion sorting method consider the first element already sorted
+            key = a[i];//setting key to ith element
+            j = i - 1;//setting j to i - 1 because element before i is already considered sorted
+            while (j >= 0 && a[j] < key) {//while j is less or equal to 0 and jth element is less than key (unsorted item is greater than sorted ones on the left)
+                //unsorted item moves down until it is sorted on the right index
+                a[j + 1] = a[j];//set j + 1th(key) element to jth element
+                j--;//subtract 1 from j
+                counter++;//add 1 to the counter to track loop
+            }
+            a[j + 1] = key;//set j + 1th element to key
+        }
+        return counter;//return counter that tracked loops
+    }
 
     /**
      * @param args the command line arguments
