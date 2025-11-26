@@ -1,12 +1,13 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package ahnsortingefficiencies;
 
-/**
- *
- * @author JaAhn8882
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+import java.awt.Color;
+
+/* Jay Ahn
+ * Nov 25 2025
+ * Program that compares bubble sort, quick sort, and insertion sort
  */
 public class AhnSortingEfficiencies extends javax.swing.JFrame {
 
@@ -15,6 +16,7 @@ public class AhnSortingEfficiencies extends javax.swing.JFrame {
      */
     public AhnSortingEfficiencies() {
         initComponents();
+        getContentPane().setBackground(Color.CYAN);
     }
 
     /**
@@ -26,21 +28,130 @@ public class AhnSortingEfficiencies extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        btngNums = new javax.swing.ButtonGroup();
+        btngOrder = new javax.swing.ButtonGroup();
+        lblTitle = new javax.swing.JLabel();
+        lblnum = new javax.swing.JLabel();
+        lblSort = new javax.swing.JLabel();
+        lblOrder = new javax.swing.JLabel();
+        rbtn10 = new javax.swing.JRadioButton();
+        rbtn10000 = new javax.swing.JRadioButton();
+        cbxSort = new javax.swing.JComboBox<>();
+        rbtnAscending = new javax.swing.JRadioButton();
+        rbtnDescending = new javax.swing.JRadioButton();
+        btnSort = new javax.swing.JButton();
+        lblOrginalNum = new javax.swing.JLabel();
+        lblSortNums = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtOriginalNums = new javax.swing.JTextArea();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txtSortNums = new javax.swing.JTextArea();
+        lblSortResult = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        txtSortResult = new javax.swing.JTextArea();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lblTitle.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblTitle.setText("Sorting Efficiencies");
+        getContentPane().add(lblTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(421, 23, -1, -1));
+
+        lblnum.setText("Amount of numbers to sort:");
+        getContentPane().add(lblnum, new org.netbeans.lib.awtextra.AbsoluteConstraints(32, 83, -1, -1));
+
+        lblSort.setText("Display numbers sorted by:");
+        getContentPane().add(lblSort, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, -1, -1));
+
+        lblOrder.setText("Sort Order:");
+        getContentPane().add(lblOrder, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, -1, -1));
+
+        btngNums.add(rbtn10);
+        rbtn10.setText("10");
+        rbtn10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbtn10ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(rbtn10, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 80, -1, -1));
+
+        btngNums.add(rbtn10000);
+        rbtn10000.setText("10000");
+        getContentPane().add(rbtn10000, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 80, -1, -1));
+
+        cbxSort.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Bubble Sort", "Quick Sort", "Insertion Sort" }));
+        getContentPane().add(cbxSort, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 130, 140, -1));
+
+        btngOrder.add(rbtnAscending);
+        rbtnAscending.setText("Ascending");
+        getContentPane().add(rbtnAscending, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 180, -1, -1));
+
+        btngOrder.add(rbtnDescending);
+        rbtnDescending.setText("Descending");
+        getContentPane().add(rbtnDescending, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 210, -1, -1));
+
+        btnSort.setText("Sort");
+        btnSort.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSortActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnSort, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 178, 200, 60));
+
+        lblOrginalNum.setText("Original Numbers:");
+        getContentPane().add(lblOrginalNum, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 270, -1, -1));
+
+        lblSortNums.setText("Sorted Numbers:");
+        getContentPane().add(lblSortNums, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 270, -1, -1));
+
+        txtOriginalNums.setColumns(20);
+        txtOriginalNums.setRows(5);
+        jScrollPane1.setViewportView(txtOriginalNums);
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 300, 250, 310));
+
+        txtSortNums.setColumns(20);
+        txtSortNums.setRows(5);
+        jScrollPane2.setViewportView(txtSortNums);
+
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 300, 250, 310));
+
+        lblSortResult.setText("Sort Results:");
+        getContentPane().add(lblSortResult, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 110, -1, -1));
+
+        txtSortResult.setColumns(20);
+        txtSortResult.setRows(5);
+        jScrollPane3.setViewportView(txtSortResult);
+
+        getContentPane().add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 133, 370, 480));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 630, -1, -1));
+
+        jLabel8.setText(".");
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 560, 50, 90));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void rbtn10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtn10ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbtn10ActionPerformed
+
+    private void btnSortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSortActionPerformed
+        try {
+            File f;
+            if (rbtn10.isEnabled()) {
+                f = new File("src/ahnsortingefficiencies/10nums.txt");
+            } else {
+                f = new File("src/ahnsortingefficiencies/10000nums.txt");
+            }
+            Scanner s = new Scanner(f);
+        } catch (FileNotFoundException e) {
+            System.out.println("Error: " + e);
+        }
+
+    }//GEN-LAST:event_btnSortActionPerformed
 
     /**
      * @param args the command line arguments
@@ -78,5 +189,28 @@ public class AhnSortingEfficiencies extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnSort;
+    private javax.swing.ButtonGroup btngNums;
+    private javax.swing.ButtonGroup btngOrder;
+    private javax.swing.JComboBox<String> cbxSort;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JLabel lblOrder;
+    private javax.swing.JLabel lblOrginalNum;
+    private javax.swing.JLabel lblSort;
+    private javax.swing.JLabel lblSortNums;
+    private javax.swing.JLabel lblSortResult;
+    private javax.swing.JLabel lblTitle;
+    private javax.swing.JLabel lblnum;
+    private javax.swing.JRadioButton rbtn10;
+    private javax.swing.JRadioButton rbtn10000;
+    private javax.swing.JRadioButton rbtnAscending;
+    private javax.swing.JRadioButton rbtnDescending;
+    private javax.swing.JTextArea txtOriginalNums;
+    private javax.swing.JTextArea txtSortNums;
+    private javax.swing.JTextArea txtSortResult;
     // End of variables declaration//GEN-END:variables
 }
