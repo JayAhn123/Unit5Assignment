@@ -11,9 +11,10 @@ import java.awt.Color;
  */
 public class AhnSortingEfficiencies extends javax.swing.JFrame {
 
-    //declaring two global array that contains numbers from the file
-    int[] num10 = new int[10];//array with 10 numbers
-    int[] num10000 = new int[10000];//array with 10000 numbesr
+    //declaring two global array that contains numbers from the file and global counter for quick sort
+    static int[] num10 = new int[10];//array with 10 numbers
+    static int[] num10000 = new int[10000];//array with 10000 numbesr
+    static int quickCount = 0;
 
     /**
      * Creates new form AhnSortingEfficiencies
@@ -27,7 +28,7 @@ public class AhnSortingEfficiencies extends javax.swing.JFrame {
             Scanner s = new Scanner(f);//setting scanner s to read file f
             Scanner s2 = new Scanner(f2);//setting scanner s2 to read file f2
             for (int i = 0; i < 10000; i++) {//for loop to repeat 10000 times
-                while (i < 10) {//while i is less than 10
+                if (i < 10) {//while i is less than 10
                     num10[i] = Integer.parseInt(s.nextLine());//fills num10 array with 10nums.txt
                 }
                 num10000[i] = Integer.parseInt(s2.nextLine());//fills num10000 array with 10000nums.txt
@@ -87,6 +88,7 @@ public class AhnSortingEfficiencies extends javax.swing.JFrame {
         getContentPane().add(lblOrder, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, -1, -1));
 
         btngNums.add(rbtn10);
+        rbtn10.setSelected(true);
         rbtn10.setText("10");
         rbtn10.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -103,6 +105,7 @@ public class AhnSortingEfficiencies extends javax.swing.JFrame {
         getContentPane().add(cbxSort, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 130, 140, -1));
 
         btngOrder.add(rbtnAscending);
+        rbtnAscending.setSelected(true);
         rbtnAscending.setText("Ascending");
         getContentPane().add(rbtnAscending, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 180, -1, -1));
 
@@ -157,7 +160,48 @@ public class AhnSortingEfficiencies extends javax.swing.JFrame {
     }//GEN-LAST:event_rbtn10ActionPerformed
 
     private void btnSortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSortActionPerformed
-        
+        int[] bubble, insertion, quick;
+        int bubbleC, insertionC;
+        String original = "", sorted = "";
+        if (rbtn10.isSelected()) {
+            bubble = num10.clone();
+            insertion = num10.clone();
+            quick = num10.clone();
+        } else {
+            System.out.println("Hi");
+            bubble = num10000.clone();
+            insertion = num10000.clone();
+            quick = num10000.clone();
+        }
+        for (int i = 0; i < bubble.length; i++) {
+            original += i + ": " + bubble[i] + "\n";
+        }
+        txtOriginalNums.setText(original);
+        if (rbtnAscending.isSelected()) {
+            bubbleC = bubbleSortA(bubble);
+            insertionC = insertionSortA(insertion);
+            quickSortA(quick, 0, quick.length - 1);
+        } else {
+            bubbleC = bubbleSortD(bubble);
+            insertionC = insertionSortD(insertion);
+            quickSortD(quick, 0, quick.length - 1);
+            System.out.println("HI");
+        }
+        if (cbxSort.getSelectedIndex() == 0) {
+            for (int i = 0; i < bubble.length; i++) {
+                sorted += i + ": " + bubble[i] + "\n";
+            }
+        } else if (cbxSort.getSelectedIndex() == 1) {
+            for (int i = 0; i < quick.length; i++) {
+                sorted += i + ": " + quick[i] + "\n";
+            }
+        } else {
+            for (int i = 0; i < insertion.length; i++) {
+                sorted += i + ": " + insertion[i] + "\n";
+            }
+        }
+        txtSortNums.setText(sorted);
+
     }//GEN-LAST:event_btnSortActionPerformed
 
     /**
@@ -260,6 +304,72 @@ public class AhnSortingEfficiencies extends javax.swing.JFrame {
             a[j + 1] = key;//set j + 1th element to key
         }
         return counter;//return counter that tracked loops
+    }
+
+    /**
+     * quick sorting method for ascending order
+     *
+     * @param a - array of numbers
+     * @param left - left most index of the array
+     * @param right - right most index of the array
+     */
+    public static void quickSortA(int[] a, int left, int right) {
+        if (left >= right) {
+            return;
+        }
+        int i = left, j = right;
+        int pivot = a[(left + right) / 2];
+        while (i < j) {
+            while (a[i] < pivot) {
+                i++;
+            }
+            while (a[j] > pivot) {
+                j--;
+            }
+            if (i <= j) {
+                int temp = a[i];
+                a[i] = a[j];
+                a[j] = temp;
+                i++;
+                j--;
+                quickCount++;
+            }
+            quickSortA(a, left, j);
+            quickSortA(a, i, right);
+        }
+    }
+
+    /**
+     * quick sorting method for descending order
+     *
+     * @param a - array of numbers
+     * @param left - left most index of the array
+     * @param right - right most index of the array
+     */
+    public static void quickSortD(int[] a, int left, int right) {
+        if (left >= right) {
+            return;
+        }
+        int i = left, j = right;
+        int pivot = a[(left + right) / 2];
+        while (i < j) {
+            while (a[i] > pivot) {
+                i++;
+            }
+            while (a[j] < pivot) {
+                j--;
+            }
+            if (i <= j) {
+                int temp = a[i];
+                a[i] = a[j];
+                a[j] = temp;
+                i++;
+                j--;
+                quickCount++;
+            }
+            quickSortD(a, left, j);
+            quickSortD(a, i, right);
+        }
     }
 
     /**
