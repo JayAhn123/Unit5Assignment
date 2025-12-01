@@ -187,19 +187,7 @@ public class AhnSortingEfficiencies extends javax.swing.JFrame {
             quickSortD(quick, 0, quick.length - 1);
             System.out.println("HI");
         }
-        if (cbxSort.getSelectedIndex() == 0) {
-            for (int i = 0; i < bubble.length; i++) {
-                sorted += i + ": " + bubble[i] + "\n";
-            }
-        } else if (cbxSort.getSelectedIndex() == 1) {
-            for (int i = 0; i < quick.length; i++) {
-                sorted += i + ": " + quick[i] + "\n";
-            }
-        } else {
-            for (int i = 0; i < insertion.length; i++) {
-                sorted += i + ": " + insertion[i] + "\n";
-            }
-        }
+        printSortedNums(cbxSort.getSelectedIndex(), bubble.length);
         txtSortNums.setText(sorted);
 
     }//GEN-LAST:event_btnSortActionPerformed
@@ -370,6 +358,24 @@ public class AhnSortingEfficiencies extends javax.swing.JFrame {
             quickSortD(a, left, j);
             quickSortD(a, i, right);
         }
+    }
+
+    public static void printSortedNums(int a, int[] bubble, int[] insertion, int[] quick) {
+        String s = "";
+        if (a == 0) {
+            for (int i = 0; i < bubble.length; i++) {
+                s += i + ": " + bubble[i] + "\n";
+            }
+        } else if (a == 1) {
+            for (int i = 0; i < quick.length; i++) {
+                s += i + ": " + quick[i] + "\n";
+            }
+        } else {
+            for (int i = 0; i < insertion.length; i++) {
+                s += i + ": " + insertion[i] + "\n";
+            }
+        }
+        txtSortNums.setText(s);
     }
 
     /**
