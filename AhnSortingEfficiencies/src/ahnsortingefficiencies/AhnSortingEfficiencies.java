@@ -187,9 +187,7 @@ public class AhnSortingEfficiencies extends javax.swing.JFrame {
             quickSortD(quick, 0, quick.length - 1);
             System.out.println("HI");
         }
-        printSortedNums(cbxSort.getSelectedIndex(), bubble.length);
-        txtSortNums.setText(sorted);
-
+        printSortedNums(cbxSort.getSelectedIndex(), bubble, quick, insertion);
     }//GEN-LAST:event_btnSortActionPerformed
 
     /**
@@ -360,19 +358,22 @@ public class AhnSortingEfficiencies extends javax.swing.JFrame {
         }
     }
 
-    public static void printSortedNums(int a, int[] bubble, int[] insertion, int[] quick) {
+    public void printSortedNums(int a, int[] bubble, int[] quick, int[] insertion) {
         String s = "";
         if (a == 0) {
             for (int i = 0; i < bubble.length; i++) {
                 s += i + ": " + bubble[i] + "\n";
+                System.out.println("HI");
             }
         } else if (a == 1) {
             for (int i = 0; i < quick.length; i++) {
                 s += i + ": " + quick[i] + "\n";
+                System.out.println("By");
             }
         } else {
             for (int i = 0; i < insertion.length; i++) {
                 s += i + ": " + insertion[i] + "\n";
+                System.out.println("dijfwo");
             }
         }
         txtSortNums.setText(s);
