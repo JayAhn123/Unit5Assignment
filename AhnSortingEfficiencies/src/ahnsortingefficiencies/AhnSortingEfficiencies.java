@@ -344,22 +344,22 @@ public class AhnSortingEfficiencies extends javax.swing.JFrame {
      * @param right - right most index of the array
      */
     public static void quickSortA(double[] a, int left, int right) {
-        if (left >= right) {
-            return;
+        if (left >= right) {//if left is greater or equal to right, meaning everything is sorted (base case)
+            return;//stops running and returns
         }
-        int i = left, j = right;
-        double pivot = a[(left + right) / 2];
-        while (i < j) {
-            while (a[i] < pivot) {
-                i++;
-                quickCount++;
+        int i = left, j = right;//sets i to left and j to right
+        double pivot = a[(left + right) / 2];//sets pivot which is the middle element in the array
+        while (i < j) {//while i is less than j
+            while (a[i] < pivot) {//while ith element is less than the pivot
+                i++;//adds 1 to the i
+                quickCount++;//adds 1 to the quick count since loop has been executed
             }
-            while (a[j] > pivot) {
-                j--;
-                quickCount++;
+            while (a[j] > pivot) {//while jth element is greater than pivot
+                j--;//subtracts 1 from the j
+                quickCount++;//adds 1 to the quick count since loop has been executed
             }
-            if (i <= j) {
-                double temp = a[i];
+            if (i <= j) {//if i is less or equal to j, meaning ith and jth element needs to be swapped
+                double temp = a[i];//stores ith element into temporary place holder
                 a[i] = a[j];
                 a[j] = temp;
                 i++;
