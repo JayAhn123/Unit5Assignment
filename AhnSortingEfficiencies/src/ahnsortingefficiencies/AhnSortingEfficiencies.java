@@ -8,13 +8,14 @@ import java.text.DecimalFormat;
 
 /* Jay Ahn
  * Nov 25 2025
- * Program that compares bubble sort, quick sort, and insertion sort
+ * Program that compares bubble sort, quick sort, and insertion sort using number sets and real life scenerio
  */
 public class AhnSortingEfficiencies extends javax.swing.JFrame {
 
-    //declaring two global array that contains numbers from the file and global counter for quick sort
-    static int[] num10 = new int[10];//array with 10 numbers
-    static int[] num10000 = new int[10000];//array with 10000 numbesr
+    //declaring two global array that contains numbers and temperature from the data files and global counter for quick sort
+    static double[] num10 = new double[10];//array with 10 numbers
+    static double[] num10000 = new double[10000];//array with 10000 numbesr
+    static double[] temp = new double[12];//array with 12 temperature from each month
     static int quickCount = 0;//loop counter that tracks loop executed for quick sorting algorithm
 
     /**
@@ -26,11 +27,16 @@ public class AhnSortingEfficiencies extends javax.swing.JFrame {
         try {//attemping to open the file
             File f = new File("src/ahnsortingefficiencies/10nums.txt");//setting file f to 10nums.txt
             File f2 = new File("src/ahnsortingefficiencies/10000nums.txt");//setting file f2 to 10000nums.txt
+            File f3 = new File("src/ahnsortingefficiencies/monthlyTemp2025.txt");//setting file f3 to monthlyTemp2025
             Scanner s = new Scanner(f);//setting scanner s to read file f
             Scanner s2 = new Scanner(f2);//setting scanner s2 to read file f2
+            Scanner s3 = new Scanner(f3);//setting scanner s3 to read file f3
             for (int i = 0; i < 10000; i++) {//for loop to repeat 10000 times
-                if (i < 10) {//while i is less than 10
-                    num10[i] = Integer.parseInt(s.nextLine());//fills num10 array with 10nums.txt
+                if (i < temp.length) {//if i is less than 12
+                    temp[i] = Double.parseDouble(s3.nextLine());//fills temp array with monthlyTemp2025.txt
+                    if (i < num10.length) {//if i is less than 10
+                        num10[i] = Integer.parseInt(s.nextLine());//fills num10 array with 10nums.txt
+                    }
                 }
                 num10000[i] = Integer.parseInt(s2.nextLine());//fills num10000 array with 10000nums.txt
             }
@@ -48,7 +54,7 @@ public class AhnSortingEfficiencies extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        btngNums = new javax.swing.ButtonGroup();
+        btngOptions = new javax.swing.ButtonGroup();
         btngOrder = new javax.swing.ButtonGroup();
         lblTitle = new javax.swing.JLabel();
         lblnum = new javax.swing.JLabel();
@@ -71,6 +77,7 @@ public class AhnSortingEfficiencies extends javax.swing.JFrame {
         txtSortResult = new javax.swing.JTextArea();
         jLabel1 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
+        rbtnTemp = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -88,7 +95,7 @@ public class AhnSortingEfficiencies extends javax.swing.JFrame {
         lblOrder.setText("Sort Order:");
         getContentPane().add(lblOrder, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, -1, -1));
 
-        btngNums.add(rbtn10);
+        btngOptions.add(rbtn10);
         rbtn10.setSelected(true);
         rbtn10.setText("10");
         rbtn10.addActionListener(new java.awt.event.ActionListener() {
@@ -98,7 +105,7 @@ public class AhnSortingEfficiencies extends javax.swing.JFrame {
         });
         getContentPane().add(rbtn10, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 80, -1, -1));
 
-        btngNums.add(rbtn10000);
+        btngOptions.add(rbtn10000);
         rbtn10000.setText("10000");
         getContentPane().add(rbtn10000, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 80, -1, -1));
 
@@ -153,6 +160,15 @@ public class AhnSortingEfficiencies extends javax.swing.JFrame {
         jLabel8.setText(".");
         getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 560, 50, 90));
 
+        btngOptions.add(rbtnTemp);
+        rbtnTemp.setText("2025 Monthly Avg Temp (°C)");
+        rbtnTemp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbtnTempActionPerformed(evt);
+            }
+        });
+        getContentPane().add(rbtnTemp, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 80, -1, -1));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -161,55 +177,62 @@ public class AhnSortingEfficiencies extends javax.swing.JFrame {
     }//GEN-LAST:event_rbtn10ActionPerformed
 
     private void btnSortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSortActionPerformed
-        int[] bubble, insertion, quick;
-        int bubbleC, insertionC;
-        long start, end, bubbleT, insertionT, quickT;
-        String original = "", sorted = "";
-        if (rbtn10.isSelected()) {
-            bubble = num10.clone();
-            insertion = num10.clone();
-            quick = num10.clone();
-        } else {
-            System.out.println("Hi");
-            bubble = num10000.clone();
-            insertion = num10000.clone();
-            quick = num10000.clone();
+        double[] bubble, insertion, quick;//declaring three empty array for each sorting method
+        int bubbleC, insertionC;//declaring counter for bubble and insertion sorting method
+        long start, end, bubbleT, insertionT, quickT;//declaring variables for time counting
+        String original = "";//declaring string used for displaying original numbers
+        if (rbtn10.isSelected()) {//if 10 is selected for which data to sort
+            bubble = num10.clone();//clones num10 array for bubble sorting method
+            insertion = num10.clone();//clones num10 array for insertion sorting method
+            quick = num10.clone();//clones num10 array for quick sorting method
+        } else if (rbtn10000.isSelected()) {//else if 10000 is selected for which data to sort
+            bubble = num10000.clone();//clones num10000 array for bubble sorting method
+            insertion = num10000.clone();//clones num10000 array for insertion sorting method
+            quick = num10000.clone();//clones num10000 array for quick sorting method
+        } else {//else 2025 monthly average temperature is selected for which data to sort
+            bubble = temp.clone();//clones temp array for bubble sorting method
+            insertion = temp.clone();//clones temp array for bubble sorting method
+            quick = temp.clone();//clones temp array for bubble sorting method
         }
-        for (int i = 0; i < bubble.length; i++) {
-            original += i + ": " + bubble[i] + "\n";
+        for (int i = 0; i < bubble.length; i++) {//for loop 0 to bubble.length to cover all the datas in the array
+            original += i + ": " + bubble[i] + "\n";//adds each index and its numbers into the original string
         }
-        txtOriginalNums.setText(original);
-        if (rbtnAscending.isSelected()) {
-            start = System.nanoTime();
-            bubbleC = bubbleSortA(bubble);
-            end = System.nanoTime();
-            bubbleT = end - start;
-            start = System.nanoTime();
-            insertionC = insertionSortA(insertion);
-            end = System.nanoTime();
-            insertionT = end - start;
-            start = System.nanoTime();
-            quickSortA(quick, 0, quick.length - 1);
-            end = System.nanoTime();
-            quickT = end - start;
-        } else {
-            start = System.nanoTime();
-            bubbleC = bubbleSortD(bubble);
-            end = System.nanoTime();
-            bubbleT = end - start;
-            start = System.nanoTime();
-            insertionC = insertionSortD(insertion);
-            end = System.nanoTime();
-            insertionT = end - start;
-            start = System.nanoTime();
-            quickSortD(quick, 0, quick.length - 1);
-            end = System.nanoTime();
-            quickT = end - start;
+        txtOriginalNums.setText(original);//displays the original string in the text field
+        if (rbtnAscending.isSelected()) {//if user chose ascending order
+            start = System.nanoTime();//gets the initial nanoseconds before running bubble sort
+            bubbleC = bubbleSortA(bubble);//sorts data file using ascending bubble sort
+            end = System.nanoTime();//gets the end nanoseconds after running bubble sort
+            bubbleT = end - start;//subtract initial nanoseconds from the end nanoseconds to get the time it took to complete bubble sort
+            start = System.nanoTime();//gets the initial nanoseconds before running insertion sort
+            insertionC = insertionSortA(insertion);//sorts data file using ascending insertion sort
+            end = System.nanoTime();//gets the end nanoseconds after running insertion sort
+            insertionT = end - start;//subtract initial nanoseconds from the end nanoseconds to get the time it took to complete insertion sort
+            start = System.nanoTime();//gets the initial nanoseconds before running quick sort
+            quickSortA(quick, 0, quick.length - 1);//sorts data file using ascending quick sort
+            end = System.nanoTime();//gets the end nanoseconds after running quick sort
+            quickT = end - start;//subtract initial nanoseconds from the end nanoseconds to get the time it took to complete quick sort
+        } else {//if user chose descending order
+            start = System.nanoTime();//gets the initial nanoseconds before running bubble sort
+            bubbleC = bubbleSortD(bubble);//sorts data file using descending bubble sort
+            end = System.nanoTime();//gets the end nanoseconds after running bubble sort
+            bubbleT = end - start;//subtract initial nanoseconds from the end nanoseconds to get the time it took to complete bubble sort
+            start = System.nanoTime();//gets the initial nanoseconds before running insertion sort
+            insertionC = insertionSortD(insertion);//sorts data file using descending insertion sort
+            end = System.nanoTime();//gets the end nanoseconds after running insertion sort
+            insertionT = end - start;//subtract initial nanoseconds from the end nanoseconds to get the time it took to complete insertion sort
+            start = System.nanoTime();//gets the initial nanoseconds before running quick sort
+            quickSortD(quick, 0, quick.length - 1);//sorts data file using descending quick sort
+            end = System.nanoTime();//gets the end nanoseconds after running quick sort
+            quickT = end - start;//subtract initial nanoseconds from the end nanoseconds to get the time it took to complete quick sort
         }
-        printSortedNums(cbxSort.getSelectedIndex(), bubble, insertion, quick);
-        printResult(bubbleC, insertionC, bubbleT, insertionT, quickT);
-        quickCount = 0;
+        printSortedNums(cbxSort.getSelectedIndex(), bubble, insertion, quick);//invokes printSortedNums method to display sorted numbers according to which sorting method the user chose
+        printResult(bubbleC, insertionC, bubbleT, insertionT, quickT);//invokes printResult method to display the times a loop was executed, and the nanoseconds it took to complete the sorting method for all three sorting algorithm
+        quickCount = 0;//sets quick counter back to 0
     }//GEN-LAST:event_btnSortActionPerformed
+
+    private void rbtnTempActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtnTempActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rbtnTempActionPerformed
 
     /**
      * bubble sorting method for ascending order
@@ -217,7 +240,7 @@ public class AhnSortingEfficiencies extends javax.swing.JFrame {
      * @param a - array of numbers
      * @return - counter for how many times a loop was executed
      */
-    public static int bubbleSortA(int[] a) {
+    public static int bubbleSortA(double[] a) {
         int counter = 0;//declaring counter to track how many times a loop executes
         int k = 0;//declaring k value which will track how many elements are sorted
         boolean exchangeMade = true;//declaring boolean exchangeMade to determine if there was any exchange within array
@@ -228,7 +251,7 @@ public class AhnSortingEfficiencies extends javax.swing.JFrame {
                 counter++;//adds 1 to the counter to track loop
                 if (a[i] > a[i + 1]) {//if ith element is greater than i + 1th element
                     //swaping i + 1th element and ith element
-                    int temp = a[i + 1];//put i + 1th element into a temporary place holder
+                    double temp = a[i + 1];//put i + 1th element into a temporary place holder
                     a[i + 1] = a[i];//set i + 1th element to ith element
                     a[i] = temp;//set ith element to the temporary place holder from i + 1th element
                     exchangeMade = true;//set exchangemade to true;
@@ -244,7 +267,7 @@ public class AhnSortingEfficiencies extends javax.swing.JFrame {
      * @param a - array of numbers
      * @return - counter for how many times a loop was executed
      */
-    public static int bubbleSortD(int[] a) {
+    public static int bubbleSortD(double[] a) {
         int counter = 0;//declaring counter to track how many times a loop executes
         int k = 0;//declaring k value which will track how many elements are sorted
         boolean exchangeMade = true;//declaring boolean exchangeMade to determine if there was any exchange within array
@@ -255,7 +278,7 @@ public class AhnSortingEfficiencies extends javax.swing.JFrame {
                 counter++;//adds 1 to the counter to track loop
                 if (a[i] < a[i + 1]) {//if ith element is less than i + 1th element
                     //swaping i + 1th element and ith element
-                    int temp = a[i + 1];//put i + 1th element into a temporary place holder
+                    double temp = a[i + 1];//put i + 1th element into a temporary place holder
                     a[i + 1] = a[i];//set i + 1th element to ith element
                     a[i] = temp;//set ith element to the temporary place holder from i + 1th element
                     exchangeMade = true;//set exchangemade to true;
@@ -271,9 +294,9 @@ public class AhnSortingEfficiencies extends javax.swing.JFrame {
      * @param a - array of numbers
      * @return - counter for how many times a loop was executed
      */
-    public static int insertionSortA(int[] a) {
+    public static int insertionSortA(double[] a) {
         int counter = 0;//declaring counter that will track the number of loops executed
-        int key;//unsorted element that is being sorted
+        double key;//unsorted element that is being sorted
         int j;//index of sorted item that is being compared to key which is unsorted element
         for (int i = 1; i < a.length; i++) {//for loop 1 to length of the array. Starts at 1 because insertion sorting method consider the first element already sorted
             key = a[i];//setting key to ith element
@@ -295,9 +318,9 @@ public class AhnSortingEfficiencies extends javax.swing.JFrame {
      * @param a - array of numbers
      * @return - counter for how many times a loop was executed
      */
-    public static int insertionSortD(int[] a) {
+    public static int insertionSortD(double[] a) {
         int counter = 0;//declaring counter that will track the number of loops executed
-        int key;//unsorted element that is being sorted
+        double key;//unsorted element that is being sorted
         int j;//index of sorted item that is being compared to key which is unsorted element
         for (int i = 1; i < a.length; i++) {//for loop 1 to length of the array. Starts at 1 because insertion sorting method consider the first element already sorted
             key = a[i];//setting key to ith element
@@ -320,12 +343,12 @@ public class AhnSortingEfficiencies extends javax.swing.JFrame {
      * @param left - left most index of the array
      * @param right - right most index of the array
      */
-    public static void quickSortA(int[] a, int left, int right) {
+    public static void quickSortA(double[] a, int left, int right) {
         if (left >= right) {
             return;
         }
         int i = left, j = right;
-        int pivot = a[(left + right) / 2];
+        double pivot = a[(left + right) / 2];
         while (i < j) {
             while (a[i] < pivot) {
                 i++;
@@ -336,7 +359,7 @@ public class AhnSortingEfficiencies extends javax.swing.JFrame {
                 quickCount++;
             }
             if (i <= j) {
-                int temp = a[i];
+                double temp = a[i];
                 a[i] = a[j];
                 a[j] = temp;
                 i++;
@@ -354,12 +377,12 @@ public class AhnSortingEfficiencies extends javax.swing.JFrame {
      * @param left - left most index of the array
      * @param right - right most index of the array
      */
-    public static void quickSortD(int[] a, int left, int right) {
+    public static void quickSortD(double[] a, int left, int right) {
         if (left >= right) {
             return;
         }
         int i = left, j = right;
-        int pivot = a[(left + right) / 2];
+        double pivot = a[(left + right) / 2];
         while (i < j) {
             while (a[i] > pivot) {
                 i++;
@@ -370,7 +393,7 @@ public class AhnSortingEfficiencies extends javax.swing.JFrame {
                 quickCount++;
             }
             if (i <= j) {
-                int temp = a[i];
+                double temp = a[i];
                 a[i] = a[j];
                 a[j] = temp;
                 i++;
@@ -382,32 +405,32 @@ public class AhnSortingEfficiencies extends javax.swing.JFrame {
     }
 
     /**
-     * displays sorted number text field
+     * displays sorted number in the text field
      *
      * @param index - index of chosen combo box
      * @param bubble - array sorted by bubble method
      * @param quick - array sorted by quick method
      * @param insertion - array sorted by insertion method
      */
-    public void printSortedNums(int index, int[] bubble, int[] insertion, int[] quick) {
-        String s = "";
+    public void printSortedNums(int index, double[] bubble, double[] insertion, double[] quick) {
+        String s = "";//declaring string that will be displayed in the text field
         if (index == 0) {//if index is 0, meaning user chose bubble sort
-            for (int i = 0; i < bubble.length; i++) {
-                s += i + ": " + bubble[i] + "\n";
-                System.out.println("HI");
+            System.out.println("Bubble");
+            for (int i = 0; i < bubble.length; i++) {//for loop 0 to bubble.length to print all the element
+                s += i + ": " + bubble[i] + "\n";//adds each index and its number to the string
             }
         } else if (index == 1) {//else if index is 1, meaning user chose insertion sort
-            for (int i = 0; i < insertion.length; i++) {
-                s += i + ": " + insertion[i] + "\n";
-                System.out.println("dijfwo");
+            System.out.println("Insertion");
+            for (int i = 0; i < insertion.length; i++) {//for loop 0 to insertion.length to print all the element
+                s += i + ": " + insertion[i] + "\n";//adds each index and its number to the string
             }
         } else {//else any other instance, meaning user chose quick sort
-            for (int i = 0; i < quick.length; i++) {
-                s += i + ": " + quick[i] + "\n";
-                System.out.println("By");
+            System.out.println("Quick");
+            for (int i = 0; i < quick.length; i++) {//for loop 0 to quick.length to print all the element
+                s += i + ": " + quick[i] + "\n";//adds each index and its number to the string
             }
         }
-        txtSortNums.setText(s);
+        txtSortNums.setText(s);//displays the string in txtSortNums
     }
 
     /**
@@ -464,7 +487,7 @@ public class AhnSortingEfficiencies extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSort;
-    private javax.swing.ButtonGroup btngNums;
+    private javax.swing.ButtonGroup btngOptions;
     private javax.swing.ButtonGroup btngOrder;
     private javax.swing.JComboBox<String> cbxSort;
     private javax.swing.JLabel jLabel1;
@@ -483,6 +506,7 @@ public class AhnSortingEfficiencies extends javax.swing.JFrame {
     private javax.swing.JRadioButton rbtn10000;
     private javax.swing.JRadioButton rbtnAscending;
     private javax.swing.JRadioButton rbtnDescending;
+    private javax.swing.JRadioButton rbtnTemp;
     private javax.swing.JTextArea txtOriginalNums;
     private javax.swing.JTextArea txtSortNums;
     private javax.swing.JTextArea txtSortResult;
