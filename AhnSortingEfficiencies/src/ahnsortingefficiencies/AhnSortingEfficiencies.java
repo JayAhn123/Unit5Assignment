@@ -12,7 +12,7 @@ import java.text.DecimalFormat;
  */
 public class AhnSortingEfficiencies extends javax.swing.JFrame {
 
-    //declaring two global array that contains numbers and temperature from the data files and global counter for quick sort
+    //declaring two global array that contains numbers and one for temperature from the data files and global counter for quick sort
     static double[] num10 = new double[10];//array with 10 numbers
     static double[] num10000 = new double[10000];//array with 10000 numbesr
     static double[] temp = new double[12];//array with 12 temperature from each month
@@ -135,12 +135,14 @@ public class AhnSortingEfficiencies extends javax.swing.JFrame {
         lblSortNums.setText("Sorted Numbers:");
         getContentPane().add(lblSortNums, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 270, -1, -1));
 
+        txtOriginalNums.setEditable(false);
         txtOriginalNums.setColumns(20);
         txtOriginalNums.setRows(5);
         jScrollPane1.setViewportView(txtOriginalNums);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 300, 250, 310));
 
+        txtSortNums.setEditable(false);
         txtSortNums.setColumns(20);
         txtSortNums.setRows(5);
         jScrollPane2.setViewportView(txtSortNums);
@@ -150,6 +152,7 @@ public class AhnSortingEfficiencies extends javax.swing.JFrame {
         lblSortResult.setText("Sort Results:");
         getContentPane().add(lblSortResult, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 110, -1, -1));
 
+        txtSortResult.setEditable(false);
         txtSortResult.setColumns(20);
         txtSortResult.setRows(5);
         jScrollPane3.setViewportView(txtSortResult);
@@ -191,8 +194,8 @@ public class AhnSortingEfficiencies extends javax.swing.JFrame {
             quick = num10000.clone();//clones num10000 array for quick sorting method
         } else {//else 2025 monthly average temperature is selected for which data to sort
             bubble = temp.clone();//clones temp array for bubble sorting method
-            insertion = temp.clone();//clones temp array for bubble sorting method
-            quick = temp.clone();//clones temp array for bubble sorting method
+            insertion = temp.clone();//clones temp array for insertion sorting method
+            quick = temp.clone();//clones temp array for quick sorting method
         }
         for (int i = 0; i < bubble.length; i++) {//for loop 0 to bubble.length to cover all the datas in the array
             original += i + ": " + bubble[i] + "\n";//adds each index and its numbers into the original string
@@ -348,7 +351,7 @@ public class AhnSortingEfficiencies extends javax.swing.JFrame {
             return;//stops running and returns
         }
         int i = left, j = right;//sets i to left and j to right
-        double pivot = a[(left + right) / 2];//sets pivot which is the middle element in the array
+        double pivot = a[(left + right) / 2];//sets pivot which is the middle element between the left and right
         while (i < j) {//while i is less than j
             while (a[i] < pivot) {//while ith element is less than the pivot
                 i++;//adds 1 to the i
@@ -358,16 +361,16 @@ public class AhnSortingEfficiencies extends javax.swing.JFrame {
                 j--;//subtracts 1 from the j
                 quickCount++;//adds 1 to the quick count since loop has been executed
             }
-            if (i <= j) {//if i is less or equal to j, meaning ith and jth element needs to be swapped
+            if (i <= j) {//if i is less or equal to j, wherever i and j ended up at, they should be swapped since they are elements that needs to be moved to opposite side 
                 double temp = a[i];//stores ith element into temporary place holder
-                a[i] = a[j];
-                a[j] = temp;
-                i++;
-                j--;
+                a[i] = a[j];//sets ith element to jth element
+                a[j] = temp;//sets jth element to temporary place holder from previous ith element
+                i++;//adds 1 to i
+                j--;//subtracts 1 from j
             }
         }
-        quickSortA(a, left, j);
-        quickSortA(a, i, right);
+        quickSortA(a, left, j);//recursive call to sort left most index to j
+        quickSortA(a, i, right);//recusive call to sort i to right most index
     }
 
     /**
@@ -378,30 +381,30 @@ public class AhnSortingEfficiencies extends javax.swing.JFrame {
      * @param right - right most index of the array
      */
     public static void quickSortD(double[] a, int left, int right) {
-        if (left >= right) {
-            return;
+        if (left >= right) {//if left is greater or equal to right, meaning everything is sorted (base case)
+            return;//stops running and returns
         }
-        int i = left, j = right;
-        double pivot = a[(left + right) / 2];
-        while (i < j) {
-            while (a[i] > pivot) {
-                i++;
-                quickCount++;
+        int i = left, j = right;//sets i to left and j to right
+        double pivot = a[(left + right) / 2];//sets pivot which is the middle element between the left and right
+        while (i < j) {//while i is less than j
+            while (a[i] > pivot) {//while ith element is greater than the pivot (since its descending order, so element greater than the pivot should be on the left)
+                i++;//adds 1 to the i
+                quickCount++;//adds 1 to the quick counter since the loop has been executed
             }
-            while (a[j] < pivot) {
-                j--;
-                quickCount++;
+            while (a[j] < pivot) {//while jth element is less than the pivot (since its descending order, so element less than the pivot should be on the right)
+                j--;//subtracts 1 from j
+                quickCount++;//adds 1 to the quick counter since the loop has been executed
             }
-            if (i <= j) {
-                double temp = a[i];
-                a[i] = a[j];
-                a[j] = temp;
-                i++;
-                j--;
+            if (i <= j) {//if i is less or equal to j, wherever i and j ended up at, they should be swapped since they are elements that needs to be moved to opposite side 
+                double temp = a[i];//stores ith element into temporary place holder
+                a[i] = a[j];//sets ith element to jth element
+                a[j] = temp;//sets jth element to temporary place holder from previous ith element
+                i++;//adds 1 to i
+                j--;//subtracts 1 from j
             }
         }
-        quickSortD(a, left, j);
-        quickSortD(a, i, right);
+        quickSortD(a, left, j);//recursive call to sort left most index to j
+        quickSortD(a, i, right);//recusive call to sort i to right most index
     }
 
     /**
@@ -415,17 +418,14 @@ public class AhnSortingEfficiencies extends javax.swing.JFrame {
     public void printSortedNums(int index, double[] bubble, double[] insertion, double[] quick) {
         String s = "";//declaring string that will be displayed in the text field
         if (index == 0) {//if index is 0, meaning user chose bubble sort
-            System.out.println("Bubble");
             for (int i = 0; i < bubble.length; i++) {//for loop 0 to bubble.length to print all the element
                 s += i + ": " + bubble[i] + "\n";//adds each index and its number to the string
             }
         } else if (index == 1) {//else if index is 1, meaning user chose insertion sort
-            System.out.println("Insertion");
             for (int i = 0; i < insertion.length; i++) {//for loop 0 to insertion.length to print all the element
                 s += i + ": " + insertion[i] + "\n";//adds each index and its number to the string
             }
         } else {//else any other instance, meaning user chose quick sort
-            System.out.println("Quick");
             for (int i = 0; i < quick.length; i++) {//for loop 0 to quick.length to print all the element
                 s += i + ": " + quick[i] + "\n";//adds each index and its number to the string
             }
